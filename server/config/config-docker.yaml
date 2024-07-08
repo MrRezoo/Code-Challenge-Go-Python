@@ -1,0 +1,14 @@
+Server:
+  port: 5005
+  runMode: debug
+logger:
+  filePath: ../logs/logs.log
+  encoding: json
+  level: debug
+cors:
+  allowedOrigins: "*"
+redis:
+  host: redis_container
+  port: 6379
+  password: password
+  db: 0
