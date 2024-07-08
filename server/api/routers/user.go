@@ -7,7 +7,7 @@ import (
 
 func UserRouter(mux *http.ServeMux) {
 	handler := handlers.NewUserHandler()
-
+	// define base /user and after that append the rest of the path
 	mux.HandleFunc("/user/all", handler.Users)
 	mux.HandleFunc("/user/register", handler.RegisterUser)
 	mux.HandleFunc("/user/deposit", handler.Deposit)
