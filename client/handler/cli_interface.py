@@ -14,7 +14,8 @@ def run_cli():
         "3. withdraw - Withdraw funds from a user account\n"
         "4. bet - Perform a betting operation (placeholder)\n"
         "5. all - Retrieve all users",
-        title="[red]User Management CLI[/red]"
+        title="[red]User Management CLI[/red]",
+        border_style="red"
     ))
 
     while True:
