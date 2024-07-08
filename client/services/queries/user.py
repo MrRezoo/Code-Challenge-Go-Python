@@ -1,7 +1,7 @@
 import requests
 
 from config.app import BASE_URL
-from utils.response import print_response
+from handler.response import print_response
 
 
 def register():
