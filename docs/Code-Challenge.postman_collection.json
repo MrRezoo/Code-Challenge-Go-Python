@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "27055227-e600-4761-8382-fd4a36ab95f8",
+		"name": "Code-Challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36182462"
+	},
+	"item": [
+		{
+			"name": "Health",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.result).to.exist;",
+							"    pm.expect(responseData.success).to.exist;",
+							"    pm.expect(responseData.code).to.exist;",
+							"    pm.expect(responseData.validation_errors).to.exist;",
+							"    pm.expect(responseData.error).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Result is a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.result).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Result should not be empty\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success is a boolean value\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Error is either null or a non-empty string\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.error).to.satisfy((error) => {",
+							"        return error === null || (typeof error === 'string' && error.length > 0);",
+							"    }, \"Error should be either null or a non-empty string\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5005/health/",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"health",
+						""
+					]
+				},
+				"description": "\nThe `GET /health/` endpoint returns a JSON response with the following schema:\n\n```json\n{\n    \"result\": \"string\",\n    \"success\": true,\n    \"code\": 0,\n    \"validation_errors\": null,\n    \"error\": \"string\"\n}\n```\n"
+			},
+			"response": []
+		},
+		{
+			"name": "User - All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.expect(pm.response.code).to.equal(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.have.property('result');",
+							"    pm.expect(responseData).to.have.property('success');",
+							"    pm.expect(responseData).to.have.property('code');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validate the result object\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.result).to.exist.and.to.be.an('array');",
+							"    responseData.result.forEach(function(user) {",
+							"        pm.expect(user.id).to.be.a('number');",
+							"        pm.expect(user.balance).to.be.a('number');",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Balance is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.result).to.be.an('array');",
+							"    responseData.result.forEach(function(user) {",
+							"        pm.expect(user.balance).to.be.a('number').and.to.be.at.least(0);",
+							"    });",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field is a boolean value\", function () {",
+							"    const responseData = pm.response.json();",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5005/user/all/",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"user",
+						"all",
+						""
+					]
+				},
+				"description": "\nThe `GET /user/all/` endpoint retrieves all users. \n\n### Response\nThe response is a JSON schema representing the user data. However, the last execution returned a 404 status with a content type of `text/plain` and the message \"404 page not found\". \n"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has Content-Type header set to application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Result object structure is valid\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.result).to.be.an('object');",
+							"    pm.expect(responseData.result.id).to.be.a('number');",
+							"    pm.expect(responseData.result.balance).to.be.a('number');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Balance in the response is a non-negative number\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.result.balance).to.be.a('number').and.to.be.at.least(0, \"Balance should be a non-negative number\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success is a boolean value\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"balance\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5005/user/register/",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"user",
+						"register",
+						""
+					]
+				},
+				"description": "\nThe `POST /user/register/` endpoint is used to register a new user with their initial balance.\n\n### Request Body\n- `balance` (number, required): The initial balance of the user.\n\n### Response\nThe response is in JSON format and has the following schema:\n```json\n{\n    \"result\": {\n        \"id\": 0,\n        \"balance\": 0\n    },\n    \"success\": true,\n    \"code\": 0,\n    \"validation_errors\": null,\n    \"error\": null\n}\n```\n- `result` (object): Contains the user's ID and balance.\n  - `id` (number): The user's ID.\n  - `balance` (number): The user's balance.\n- `success` (boolean): Indicates if the request was successful.\n- `code` (number): A code indicating the status of the request.\n- `validation_errors` (null): Validation errors, if any.\n- `error` (null): Any error message, if applicable.\n\n"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Deposit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.result).to.exist;",
+							"    pm.expect(responseData.success).to.exist;",
+							"    pm.expect(responseData.code).to.exist;",
+							"    pm.expect(responseData.validation_errors).to.exist;",
+							"    pm.expect(responseData.error).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Result object contains id and balance with valid data types\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData.result).to.be.an('object');",
+							"    pm.expect(responseData.result.id).to.be.a('number');",
+							"    pm.expect(responseData.result.balance).to.be.a('number');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success field is a boolean\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validation errors and error fields should be null\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData.validation_errors).to.be.null;",
+							"    pm.expect(responseData.error).to.be.null;",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":1,\n    \"amount\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5005/user/deposit/",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"user",
+						"deposit",
+						""
+					]
+				},
+				"description": "\nThis endpoint allows the user to update the deposit amount for a specific user. \n\n### Request Body\n- id (number): The user ID for which the deposit amount needs to be updated.\n- amount (number): The deposit amount to be updated.\n\n### Response\nThe response is in JSON format and has the following schema:\n```json\n{\n    \"result\": {\n        \"id\": 0,\n        \"balance\": 0\n    },\n    \"success\": true,\n    \"code\": 0,\n    \"validation_errors\": null,\n    \"error\": null\n}\n```\n- result (object): Contains the updated user ID and the new balance after the deposit.\n  - id (number): The user ID.\n  - balance (number): The updated balance after the deposit.\n- success (boolean): Indicates if the request was successful.\n- code (number): A code indicating the status of the request.\n- validation_errors (null): Null if there are no validation errors.\n- error (null): Null if there are no errors.\n"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Withdraw",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response has the required fields\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.result).to.exist;",
+							"    pm.expect(responseData.success).to.exist;",
+							"    pm.expect(responseData.code).to.exist;",
+							"    pm.expect(responseData.validation_errors).to.exist;",
+							"    pm.expect(responseData.error).to.exist;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Result should be null when withdrawal is successful\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.result).to.be.null;",
+							"    pm.expect(responseData.success).to.be.true;",
+							"});",
+							"",
+							"",
+							"pm.test(\"Validation errors array is present and either null or empty\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData).to.have.property('validation_errors');",
+							"    pm.expect(responseData.validation_errors).to.satisfy((validationErrors) => {",
+							"        return validationErrors === null || validationErrors.length === 0;",
+							"    }, 'Validation errors should be either null or an empty array');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Code is a non-negative integer\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData.code).to.be.a('number');",
+							"    pm.expect(responseData.code).to.be.at.least(0);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\":1,\n    \"amount\":10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5005/user/withdraw/",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"user",
+						"withdraw",
+						""
+					]
+				},
+				"description": "\nThe `PATCH` request is used to update the user's withdrawal information at the specified endpoint `localhost:5005/user/withdraw/`.\n\n### Request Body\nThe request body should be in raw format and include the following parameters:\n- `id` (number): The user ID.\n- `amount` (number): The withdrawal amount.\n\n### Response\nThe response will be in JSON format with the following schema:\n```json\n{\n    \"result\": null,\n    \"success\": true,\n    \"code\": 0,\n    \"validation_errors\": [\n        {\n            \"property\": \"\",\n            \"tag\": \"\",\n            \"value\": \"\",\n            \"message\": \"\"\n        }\n    ],\n    \"error\": null\n}\n```\n- `result` (null): The result of the withdrawal operation.\n- `success` (boolean): Indicates if the withdrawal was successful.\n- `code` (number): The status code of the operation.\n- `validation_errors` (array): An array of validation errors, if any.\n    - `property` (string): The property that has a validation error.\n    - `tag` (string): The tag for the validation error.\n    - `value` (string): The value causing the validation error.\n    - `message` (string): The error message.\n- `error` (null): Any error that occurred during the withdrawal process.\n\n"
+			},
+			"response": []
+		},
+		{
+			"name": "User - Bet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Result object should exist and have correct properties\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData.result).to.exist.and.to.be.an('object');",
+							"    pm.expect(responseData.result.id).to.be.a('number');",
+							"    pm.expect(responseData.result.balance).to.be.a('number');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Success is a boolean value\", function () {",
+							"    const responseData = pm.response.json();",
+							"    ",
+							"    pm.expect(responseData.success).to.be.a('boolean');",
+							"});",
+							"",
+							"",
+							"pm.test(\"Response time is less than 200ms\", function () {",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);",
+							"});",
+							"",
+							"pm.test(\"Check if validation_errors and error are null or not present\", function () {",
+							"    const responseData = pm.response.json();",
+							"",
+							"    pm.expect(responseData).to.be.an('object');",
+							"    pm.expect(responseData).to.not.have.property('validation_errors');",
+							"    pm.expect(responseData).to.not.have.property('error');",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    // For simplicity, let's assume the user always loses.\n    \"id\":2,\n    \"amount\":7\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5005/user/bet/",
+					"host": [
+						"localhost"
+					],
+					"port": "5005",
+					"path": [
+						"user",
+						"bet",
+						""
+					]
+				},
+				"description": "\n### Endpoint Description\nThis endpoint allows users to place a bet with a specified amount and receive the result.\n\n### Request Body\n- id (number): The user's ID.\n- amount (number): The amount of the bet placed.\n\n### Response\nThe response is in JSON format and includes the following fields:\n- result (object):\n  - id (number): The ID of the result.\n  - balance (number): The user's balance after the bet.\n- success (boolean): Indicates if the request was successful.\n- code (number): The status code of the response.\n- validation_errors (null): Indicates any validation errors, if present.\n- error (null): Indicates any errors, if present.\n\n### JSON Schema\n```json\n{\n  \"type\": \"object\",\n  \"properties\": {\n    \"result\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"id\": {\n          \"type\": \"number\"\n        },\n        \"balance\": {\n          \"type\": \"number\"\n        }\n      }\n    },\n    \"success\": {\n      \"type\": \"boolean\"\n    },\n    \"code\": {\n      \"type\": \"number\"\n    },\n    \"validation_errors\": {\n      \"type\": \"null\"\n    },\n    \"error\": {\n      \"type\": \"null\"\n    }\n  }\n}\n```\n"
+			},
+			"response": []
+		}
+	]
+}
