@@ -30,7 +30,7 @@ client for interacting with the server.
 
 - Go 1.18+
 - Redis
-- Python 3.8+
+- Python 3.12+
 - Docker (optional)
 
 ## Installation
