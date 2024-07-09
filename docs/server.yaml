@@ -1,0 +1,230 @@
+openapi: 3.0.0
+info:
+  title: Code-Challenge API
+  version: 1.0.0
+paths:
+  /health:
+    get:
+      summary: Health Check
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: string
+                  success:
+                    type: boolean
+                  code:
+                    type: integer
+                  validation_errors:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                  error:
+                    type: string
+                    nullable: true
+  /user/all:
+    get:
+      summary: Retrieve All Users
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        balance:
+                          type: number
+                  success:
+                    type: boolean
+                  code:
+                    type: integer
+  /user/register:
+    post:
+      summary: Register User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                balance:
+                  type: number
+              required:
+                - id
+                - balance
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      balance:
+                        type: number
+                  success:
+                    type: boolean
+                  code:
+                    type: integer
+                  validation_errors:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                  error:
+                    type: string
+                    nullable: true
+  /user/deposit:
+    patch:
+      summary: Deposit to User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                amount:
+                  type: number
+              required:
+                - id
+                - amount
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      balance:
+                        type: number
+                  success:
+                    type: boolean
+                  code:
+                    type: integer
+                  validation_errors:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                  error:
+                    type: string
+                    nullable: true
+  /user/withdraw:
+    patch:
+      summary: Withdraw from User
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                amount:
+                  type: number
+              required:
+                - id
+                - amount
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      balance:
+                        type: number
+                  success:
+                    type: boolean
+                  code:
+                    type: integer
+                  validation_errors:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                  error:
+                    type: string
+                    nullable: true
+  /user/bet:
+    post:
+      summary: Place a Bet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                amount:
+                  type: number
+              required:
+                - id
+                - amount
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      balance:
+                        type: number
+                  success:
+                    type: boolean
+                  code:
+                    type: integer
+                  validation_errors:
+                    type: array
+                    items:
+                      type: string
+                    nullable: true
+                  error:
+                    type: string
+                    nullable: true

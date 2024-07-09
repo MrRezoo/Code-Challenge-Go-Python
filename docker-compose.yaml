@@ -1,0 +1,59 @@
+version: "3.9"
+name: challenge
+services:
+  client:
+    container_name: client_container
+    image: challenge-client
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    environment:
+      - APP_ENV=docker
+    stdin_open: true
+    tty: true
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./client:/usr/src/app
+    networks:
+      - app_network
+    restart: unless-stopped
+  server:
+    container_name: server_container
+    image: challenge-server
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    environment:
+      - APP_ENV=docker
+    depends_on:
+      - redis
+    ports:
+      - "5005:5005"
+    expose:
+      - "5005"
+    volumes:
+      - ./server:/usr/src/app
+    networks:
+      - app_network
+    restart: unless-stopped
+  redis:
+    image: redis:7.2
+    container_name: redis_container
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis:/data
+    networks:
+      - app_network
+    restart: unless-stopped
+
+volumes:
+  redis:
+
+
+networks:
+  app_network:
+    driver: bridge

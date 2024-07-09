@@ -11,6 +11,7 @@ var ctx = context.Background()
 var RedisClient *redis.Client
 
 func InitRedis(config *config.RedisConfig) {
+
 	RedisClient = redis.NewClient(&redis.Options{
 		Addr:     config.Host + ":" + config.Port,
 		Password: config.Password,

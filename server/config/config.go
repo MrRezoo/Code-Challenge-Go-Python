@@ -15,7 +15,7 @@ type Config struct {
 
 type ServerConfig struct {
 	Port    string
-	runMode string
+	RunMode string
 }
 
 type CorsConfig struct {

@@ -23,7 +23,7 @@ func GenerateBaseResponseWithError(result any, success bool, code int, err error
 		Result:  result,
 		Success: success,
 		Code:    code,
-		Error:   err,
+		Error:   err.Error(),
 	}
 }
 
