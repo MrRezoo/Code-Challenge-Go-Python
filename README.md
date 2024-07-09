@@ -1,8 +1,3 @@
-It seems I can't retrieve the existing README from the GitHub repository directly. However, I can help you create a
-comprehensive and detailed `README.md` file for your project based on the provided information and standard practices.
-Here is a structured `README.md` for your project:
-
-```markdown
 # Code Challenge API
 
 This project is a simple HTTP server built with Go that provides user account management functionalities, such as
