@@ -19,14 +19,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install Poetry
-        run: |
-          curl -sSL https://install.python-poetry.org | python3 -
+        uses: snok/install-poetry@v1
 
-      - name: Configure Poetry
-        run: |
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-          poetry config virtualenvs.create false
-
-      - name: Install dependencies with Poetry
-        run: |
-          poetry install
+      - name: Install dependencies
+        run: poetry install
